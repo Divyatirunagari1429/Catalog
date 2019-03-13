@@ -1,0 +1,46 @@
+{% include 'nav.html' %}
+<div class="main">
+{% block content %}
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	        <div class="alert alert-success alert-dismissable animated fadeIn">
+	            {% for message in messages %}
+	            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+	            <p class="h4"><strong>{{ message }}</strong></p>
+	            {% endfor %}
+	        </div>
+	{% endif %}	    
+{% endwith %}
+{% if 'username' in session %}
+<button type="button" class="btn btn-warning" style="margin: 10px 25px;background-color:#99e600;border-color:#99e600"><a href="{{url_for('addFoundDetails',tbname=lan.name)}}" style="text-decoration: none;"><strong>Add New Foundation</strong></a></button>
+
+{% endif %}
+<div class="row" style="margin: 15px;">
+{% for ftb in tot %}
+
+	<div class="col-sm-4 text-center" style="width:300px;">
+		<div class="panel panel-primary" style="border-color:white">
+			<div class="panel-heading" style="background-color:#ff99cc;border-color:#ff99cc">
+				<h4>{{ ftb.name }}</h4>
+			</div>
+			<div class="panel-body text-center">
+				<table>
+					<tr><th>SHADE</th><td>:</td><td><h5>{{ ftb.shade }}</h5></td></tr>
+					<tr><th>QUANTITY</th><td>:</td><td><h5>{{ ftb.quantity }}</h5></td></tr>
+					<tr><th>SKIN TYPE</th><td>:</td><td><h5>{{ ftb.skintype }}</h5></td></tr>
+					<tr><th>PRICE</th><td>:</td><td><h5>{{ ftb.price }}</h5></td></tr>
+				</table>
+			</div>
+			{% if 'username' in session %}
+			<div class="panel-footer" style="background-color:#ffe6f7">
+					<button type="button" class="btn btn-info"><a href="{{ url_for('editFound',fid=lan.id,ftbname=ftb.name) }}"style="text-decoration: none;color:white;">EDIT</a></button>
+					<button type="button" class="btn btn-danger"><a href="{{ url_for('deleteFound',fid=lan.id,ftbname=ftb.name)}}"style="text-decoration: none;color:white;">DELETE</a></button>
+			</div>
+			{% endif %}	
+			
+		</div>
+	</div>
+{% endfor %}
+</div>
+{% endblock content %}
+</div>

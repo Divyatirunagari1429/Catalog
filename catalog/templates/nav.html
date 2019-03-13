@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>FOUNDATIONS STORE</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="//apis.google.com/js/platform.js?onload=start"> </script>
+  <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+  <style>
+    body {
+      font-family: Forte;
+	  background-image:url("https://www.freepptbackgrounds.net/wp-content/uploads/2018/05/Winter-Flowers-Backgrounds.jpg");
+   }
+
+    .container {
+      width: 100%;
+
+    }
+	.main{
+	float:left;
+	 padding-top: 60px;
+	 margin-right: 300px;
+	}
+	.sidenav{
+	float:right;
+	}
+	.sidenav {
+	
+      width: 300px;
+      position: fixed;
+      top: 50px;
+      right: 0;
+      overflow-x: hidden;
+      padding-top: 20px;
+	  
+    }
+	.sidenav a {
+      padding: 10px;
+      text-decoration: none;
+      font-size: 20px;
+      color:yellow;
+      display: block;
+    }
+	.sidenav a:hover {
+      color: #6666ff ;
+    }
+	img{
+	border-radius:15px 50px;
+	}
+	
+  </style>
+  {% block head %}{% endblock head %}
+</head>
+<body>
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <script>
+            var messages = {{ messages | safe }};
+            for (var i=0; i<messages.length; i++) {
+              alert(messages[i]);
+            }
+          </script>
+        {% endif %}
+{% endwith %}
+<nav class="navbar navbar-inverse  navbar-fixed-top" style="background-color:#ccccb3">
+  <div class="container-fluid">
+    <div class="navbar-header" style="color:#b3ffcc">
+      <a class="navbar-brand" href="{{ url_for('home') }}">FOUNDATIONS STORE</a>
+    </div>
+    <ul class="nav navbar-nav navbar-left">
+      {% if 'username' in session %}
+            <li><button class="btn btn-warning mr-sm-2" style="margin-top: 5px;background-color:#f9e6ff;border-color:#f9e6ff"><a href="{{ url_for('addFoundCompany')}}">ADD FOUNDATION CATEGORY</a></button></li>
+            <li style=" margin:10px;"><p class="text-primary mr-sm-2">{{ session.username }}</p></li>
+			
+            <li><a href="{{ url_for('logout')}}"><span class="glyphicon glyphicon-log-in"></span> LOGOUT</a></li>
+      {% else %}
+            <li><a href="{{ url_for('showLogin')}}"><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
+      {% endif %}
+      
+    </ul>
+  </div>
+</nav>
+  
+<div class="sidenav">
+  <table>
+      {% for tb in most %}
+      <tr>
+          <td><a href="{{ url_for('showFound',fid=tb.id)}}">{{tb.name}}</a></td>
+          {% if 'username' in session %}
+            <td><a href = "{{ url_for('editFoundCategory',fid=tb.id)}}">
+            <span class="glyphicon glyphicon-pencil pull-right " data-toggle="tooltip" title="Edit Category" data-placement="bottom"> </span> </a></td>
+            <td><a href = "{{ url_for('deleteFoundCategory',fid=tb.id)}}">
+            <span class="glyphicon glyphicon-trash pull-right" data-toggle="tooltip" title="Delete Category" data-placement="top"> </span> </a></td>  
+          {% endif %}   
+        </tr>              
+      {% endfor %}
+  </table>
+</div>
+<div class="container">
+
+      <div class="main" style="margin-top: 100px;">
+	  <div class="sidenav" style="margin-top: 100px;">
+	  
+        
+            {% block content %}
+              
+            {% endblock content %}
+          
+        </div>
+  </div>
+  
+</body>
+</html>
